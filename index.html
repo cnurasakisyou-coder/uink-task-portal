@@ -1,0 +1,575 @@
+<title>嘉数重工 タスク確認表</title>
+<style>
+:root{
+  --ink:#1c2126;
+  --steel-700:#3f4c58;
+  --steel-300:#c7d0d6;
+  --paper:#f3f1ec;
+  --surface:#ffffff;
+  --surface-alt:#eae7df;
+  --accent:#cf5c1f;
+  --accent-soft:#f4ddc9;
+  --accent-ink:#8a3f14;
+  --done:#3c7a56;
+  --done-soft:#dcebe1;
+  --border:#ddd8cc;
+  --text-secondary:#6b6456;
+  --shadow:0 1px 2px rgba(28,33,38,.06),0 1px 4px rgba(28,33,38,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#e8e6e0;
+    --steel-700:#aab6c0;
+    --steel-300:#3a4248;
+    --paper:#15181a;
+    --surface:#1e2225;
+    --surface-alt:#262b2e;
+    --accent:#e8792f;
+    --accent-soft:#3c2a1a;
+    --accent-ink:#f0a567;
+    --done:#5fae84;
+    --done-soft:#1f332a;
+    --border:#3a3f3f;
+    --text-secondary:#a39d8d;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 1px 6px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#e8e6e0;
+  --steel-700:#aab6c0;
+  --steel-300:#3a4248;
+  --paper:#15181a;
+  --surface:#1e2225;
+  --surface-alt:#262b2e;
+  --accent:#e8792f;
+  --accent-soft:#3c2a1a;
+  --accent-ink:#f0a567;
+  --done:#5fae84;
+  --done-soft:#1f332a;
+  --border:#3a3f3f;
+  --text-secondary:#a39d8d;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 1px 6px rgba(0,0,0,.3);
+}
+
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Hiragino Sans","Yu Gothic Medium","Noto Sans JP",sans-serif;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.tnum{font-variant-numeric:tabular-nums;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;}
+
+.wrap{max-width:640px;margin:0 auto;padding:28px 18px 64px;}
+
+/* ---------- header ---------- */
+.masthead{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  padding-bottom:16px;
+  border-bottom:2px solid var(--steel-700);
+  margin-bottom:18px;
+}
+.masthead-eyebrow{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+  color:var(--text-secondary);
+  margin:0 0 6px;
+}
+.masthead-title{
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:.01em;
+  margin:0;
+  text-wrap:balance;
+}
+.masthead-meta{
+  text-align:right;
+  font-size:11.5px;
+  color:var(--text-secondary);
+  white-space:nowrap;
+  padding-top:2px;
+}
+.masthead-meta .tnum{display:block;color:var(--ink);font-weight:700;font-size:13px;}
+
+/* ---------- tabs ---------- */
+.tabbar{
+  display:flex;
+  gap:6px;
+  background:var(--surface-alt);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:4px;
+  margin-bottom:18px;
+}
+.tab-btn{
+  flex:1 1 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  border:none;
+  background:transparent;
+  color:var(--text-secondary);
+  font-family:inherit;
+  font-size:13.5px;
+  font-weight:700;
+  padding:9px 10px;
+  border-radius:8px;
+  cursor:pointer;
+}
+.tab-btn.active{background:var(--surface);color:var(--ink);box-shadow:var(--shadow);}
+.tab-btn .tab-count{
+  font-size:11px;
+  font-weight:700;
+  padding:1px 7px;
+  border-radius:999px;
+  background:var(--surface-alt);
+  color:var(--text-secondary);
+}
+.tab-btn.active .tab-count{background:var(--done-soft);color:var(--done);}
+.tab-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+.intro{
+  font-size:13.5px;
+  color:var(--text-secondary);
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:13px 15px;
+  margin-bottom:22px;
+}
+.intro strong{color:var(--ink);}
+
+/* ---------- progress ---------- */
+.progress-card{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:14px 16px;
+  margin-bottom:28px;
+  box-shadow:var(--shadow);
+}
+.progress-text{flex:1 1 auto;min-width:0;}
+.progress-label{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-secondary);margin:0 0 4px;}
+.progress-count{font-size:19px;font-weight:800;margin:0;}
+.progress-count .tnum{color:var(--accent);}
+.progress-track{height:6px;border-radius:3px;background:var(--surface-alt);margin-top:8px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--done);border-radius:3px;transition:width .4s ease;}
+@media (prefers-reduced-motion: reduce){.progress-fill{transition:none;}}
+
+/* ---------- section ---------- */
+.section{margin-bottom:30px;}
+.section-head{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+  padding-bottom:6px;
+  border-bottom:1px solid var(--border);
+}
+.section-title{font-size:13.5px;font-weight:800;letter-spacing:.03em;color:var(--steel-700);}
+.section-sub{font-size:11px;color:var(--text-secondary);white-space:nowrap;}
+
+.task-list{display:flex;flex-direction:column;gap:10px;}
+
+.task{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-left:4px solid var(--steel-300);
+  border-radius:8px;
+  padding:13px 14px;
+  box-shadow:var(--shadow);
+  transition:opacity .25s ease, border-left-color .25s ease;
+}
+.task.is-done{opacity:.6;border-left-color:var(--done);}
+.task.is-done .task-body-text{text-decoration:line-through;text-decoration-color:var(--text-secondary);}
+
+.task-check{
+  flex:0 0 auto;
+  width:22px;height:22px;
+  margin-top:1px;
+  cursor:pointer;
+  accent-color:var(--done);
+}
+.task-check:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+
+.task-main{flex:1 1 auto;min-width:0;}
+.task-body-text{
+  display:block;
+  font-size:14.5px;
+  font-weight:600;
+  margin:0 0 4px;
+  cursor:pointer;
+}
+.task-note{font-size:12.5px;color:var(--text-secondary);margin:0 0 10px;}
+
+.task-fields{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 14px;
+  align-items:center;
+  margin-bottom:8px;
+}
+.field{display:flex;align-items:center;gap:6px;}
+.field-label{font-size:10.5px;font-weight:700;letter-spacing:.04em;color:var(--text-secondary);white-space:nowrap;}
+.due-input{
+  font-family:inherit;
+  font-size:12.5px;
+  color:var(--ink);
+  background:var(--surface-alt);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:4px 7px;
+}
+.due-input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+.done-date-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10.5px;font-weight:700;
+  padding:3px 9px;border-radius:999px;
+  background:var(--done-soft);color:var(--done);
+}
+
+.memo-input{
+  display:block;
+  width:100%;
+  resize:vertical;
+  min-height:38px;
+  font-family:inherit;
+  font-size:12.5px;
+  color:var(--ink);
+  background:var(--surface-alt);
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:7px 9px;
+}
+.memo-input::placeholder{color:var(--text-secondary);}
+.memo-input:focus-visible{outline:2px solid var(--accent);outline-offset:1px;}
+
+.done-section .task{cursor:default;}
+.empty-note{font-size:12.5px;color:var(--text-secondary);padding:6px 2px;}
+
+footer{
+  margin-top:36px;
+  padding-top:16px;
+  border-top:1px dashed var(--border);
+  font-size:11.5px;
+  color:var(--text-secondary);
+}
+footer p{margin:0 0 6px;}
+</style>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <div>
+      <p class="masthead-eyebrow">嘉数重工 経営支援 ｜ U Inc.</p>
+      <h1 class="masthead-title">タスク確認表</h1>
+    </div>
+    <div class="masthead-meta">
+      最終更新
+      <span class="tnum" id="updated-date">2026-11-02</span>
+    </div>
+  </div>
+
+  <div class="tabbar" id="tabbar" role="tablist"></div>
+
+  <p class="intro" id="intro-text"></p>
+
+  <div class="progress-card">
+    <div class="progress-text">
+      <p class="progress-label">進捗</p>
+      <p class="progress-count"><span class="tnum" id="done-count">0</span> / <span class="tnum" id="total-count">0</span> 件完了</p>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div id="sections"></div>
+
+  <div class="section done-section" id="section-done">
+    <div class="section-head">
+      <span class="section-title">完了済み</span>
+      <span class="section-sub" id="done-sub">0件</span>
+    </div>
+    <div class="task-list" id="list-done"></div>
+    <p class="empty-note" id="done-empty">まだありません。</p>
+  </div>
+
+  <footer>
+    <p>出所：求人票・HP関連の打合せ内容（2026-11-02時点）。「社長」「浦崎」はそれぞれの担当タスクのみを表示しています。</p>
+    <p>期限・メモ・チェックの記録はこの端末・このブラウザ内のみです。別の端末で開くと記録されていない状態で表示されます。</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var OWNERS = [
+    {
+      id: "shacho",
+      label: "社長",
+      intro: "社長にご対応いただきたい項目です。<strong>完了したものはチェックを入れてください</strong>。期限の設定やメモの記入もできます（このブラウザに記録され、次に開いたときもそのまま残ります）。"
+    },
+    {
+      id: "urasaki",
+      label: "浦崎",
+      intro: "浦崎（U Inc.）側で進める項目です。社長側の進捗を見ながら着手します。"
+    }
+  ];
+
+  var SECTIONS = {
+    shacho: [
+      { id: "komiya", title: "小宮さんへ（求人票の概要を固める）" },
+      { id: "ads", title: "広告" },
+      { id: "baito", title: "バイト確認" }
+    ],
+    urasaki: [
+      { id: "komiya", title: "小宮さん対応" },
+      { id: "ads", title: "広告" },
+      { id: "baito", title: "バイト確認" }
+    ]
+  };
+
+  var TASKS = {
+    shacho: [
+      {
+        id: "shacho_koujinhyou_soumu_keiri",
+        text: "総務経理：求人の概要を固める",
+        note: "業務内容・条件等。固まったら小宮さんへ共有します。",
+        section: "komiya"
+      },
+      {
+        id: "shacho_koujinhyou_eigyouhosa",
+        text: "営業補佐：求人を出すか確定する",
+        note: "AI見積もり自動化で代替するなら、この求人は不要（削除）。出す場合は概要も固める。",
+        section: "komiya"
+      },
+      {
+        id: "shacho_koujinhyou_seibishi",
+        text: "整備士：求人の概要を固める",
+        note: "業務内容・条件等。固まったら小宮さんへ共有します。",
+        section: "komiya"
+      },
+      {
+        id: "shacho_ads_naibu_hearing",
+        text: "広告用の社内ヒアリングに対応する（代表・社員）",
+        note: "このヒアリング内容をもとに広告を作成します。",
+        section: "ads"
+      },
+      {
+        id: "shacho_baito_jyoukyou_kakunin",
+        text: "バイトの受け入れ状況を確認する",
+        note: "",
+        section: "baito"
+      }
+    ],
+    urasaki: [
+      {
+        id: "urasaki_koujinhyou_kyouyuu",
+        text: "求人概要（総務経理／整備士／営業補佐の要否）がまとまったら小宮さんへ共有する",
+        note: "社長側の確定を待って着手【仮】。",
+        section: "komiya"
+      },
+      {
+        id: "urasaki_ads_hearing_jisshi",
+        text: "広告用の社内ヒアリングを実施する（代表・社員）",
+        note: "【仮】",
+        section: "ads"
+      },
+      {
+        id: "urasaki_ads_sakusei",
+        text: "ヒアリング内容をもとに広告を作成する",
+        note: "【仮】",
+        section: "ads"
+      },
+      {
+        id: "urasaki_baito_boshuu",
+        text: "バイトの受け入れ担当が決まり次第、募集を進める",
+        note: "社長側のタスク完了を待って着手【仮】。",
+        section: "baito"
+      }
+    ]
+  };
+
+  var STATE_KEY = "kakazu_task_state_v2";
+  var ACTIVE_TAB_KEY = "kakazu_active_owner_v1";
+
+  function loadState(){
+    try{
+      var raw = window.localStorage.getItem(STATE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(){
+    try{ window.localStorage.setItem(STATE_KEY, JSON.stringify(taskState)); }catch(e){}
+  }
+  function loadActiveOwner(){
+    try{
+      var v = window.localStorage.getItem(ACTIVE_TAB_KEY);
+      return (v === "shacho" || v === "urasaki") ? v : "shacho";
+    }catch(e){ return "shacho"; }
+  }
+  function saveActiveOwner(id){
+    try{ window.localStorage.setItem(ACTIVE_TAB_KEY, id); }catch(e){}
+  }
+
+  var taskState = loadState();
+  var activeOwner = loadActiveOwner();
+
+  function getState(id){
+    if (!taskState[id]){
+      taskState[id] = { done: false, doneDate: "", due: "", memo: "" };
+    }
+    return taskState[id];
+  }
+
+  function todayStr(){
+    var d = new Date();
+    var mm = String(d.getMonth() + 1).padStart(2, "0");
+    var dd = String(d.getDate()).padStart(2, "0");
+    return d.getFullYear() + "-" + mm + "-" + dd;
+  }
+
+  function ownerDoneCount(ownerId){
+    var n = 0;
+    TASKS[ownerId].forEach(function(t){ if (getState(t.id).done) n++; });
+    return n;
+  }
+
+  function renderTask(t){
+    var s = getState(t.id);
+    var el = document.createElement("div");
+    el.className = "task" + (s.done ? " is-done" : "");
+
+    el.innerHTML =
+      '<input type="checkbox" class="task-check" ' + (s.done ? "checked" : "") + ' aria-label="完了にする">' +
+      '<div class="task-main">' +
+        '<p class="task-body-text">' + t.text + '</p>' +
+        (t.note ? '<p class="task-note">' + t.note + '</p>' : '') +
+        '<div class="task-fields">' +
+          '<div class="field"><span class="field-label">期限</span><input type="date" class="due-input" value="' + s.due + '"></div>' +
+          (s.done && s.doneDate ? '<span class="done-date-chip tnum">完了 ' + s.doneDate + '</span>' : '') +
+        '</div>' +
+        '<textarea class="memo-input" placeholder="メモ（進捗・補足など）" rows="2">' + s.memo + '</textarea>' +
+      '</div>';
+
+    var cb = el.querySelector(".task-check");
+    var text = el.querySelector(".task-body-text");
+    var dueInput = el.querySelector(".due-input");
+    var memoInput = el.querySelector(".memo-input");
+
+    function toggle(){
+      s.done = !s.done;
+      s.doneDate = s.done ? todayStr() : "";
+      saveState();
+      render();
+    }
+    cb.addEventListener("change", toggle);
+    text.addEventListener("click", function(){
+      cb.checked = !cb.checked;
+      toggle();
+    });
+
+    dueInput.addEventListener("change", function(){
+      s.due = dueInput.value;
+      saveState();
+    });
+    dueInput.addEventListener("click", function(e){ e.stopPropagation(); });
+
+    memoInput.addEventListener("input", function(){
+      s.memo = memoInput.value;
+      saveState();
+    });
+    memoInput.addEventListener("click", function(e){ e.stopPropagation(); });
+
+    return el;
+  }
+
+  function renderTabbar(){
+    var bar = document.getElementById("tabbar");
+    bar.innerHTML = "";
+    OWNERS.forEach(function(o){
+      var btn = document.createElement("button");
+      btn.className = "tab-btn" + (o.id === activeOwner ? " active" : "");
+      btn.setAttribute("role", "tab");
+      btn.setAttribute("aria-selected", o.id === activeOwner ? "true" : "false");
+      var done = ownerDoneCount(o.id);
+      var total = TASKS[o.id].length;
+      btn.innerHTML = o.label + ' <span class="tab-count tnum">' + done + '/' + total + '</span>';
+      btn.addEventListener("click", function(){
+        activeOwner = o.id;
+        saveActiveOwner(activeOwner);
+        render();
+      });
+      bar.appendChild(btn);
+    });
+  }
+
+  function render(){
+    renderTabbar();
+
+    var owner = OWNERS.filter(function(o){ return o.id === activeOwner; })[0];
+    document.getElementById("intro-text").innerHTML = owner.intro;
+
+    var sectionsRoot = document.getElementById("sections");
+    var listDone = document.getElementById("list-done");
+    sectionsRoot.innerHTML = "";
+    listDone.innerHTML = "";
+
+    var doneCount = 0;
+    var remainingBySection = {};
+    SECTIONS[activeOwner].forEach(function(s){ remainingBySection[s.id] = []; });
+
+    TASKS[activeOwner].forEach(function(t){
+      if (getState(t.id).done){
+        doneCount++;
+        listDone.appendChild(renderTask(t));
+      } else {
+        remainingBySection[t.section].push(t);
+      }
+    });
+
+    SECTIONS[activeOwner].forEach(function(s){
+      var items = remainingBySection[s.id];
+      if (!items.length) return;
+      var sectionEl = document.createElement("div");
+      sectionEl.className = "section";
+      var head = document.createElement("div");
+      head.className = "section-head";
+      head.innerHTML = '<span class="section-title">' + s.title + '</span>';
+      var list = document.createElement("div");
+      list.className = "task-list";
+      items.forEach(function(t){ list.appendChild(renderTask(t)); });
+      sectionEl.appendChild(head);
+      sectionEl.appendChild(list);
+      sectionsRoot.appendChild(sectionEl);
+    });
+
+    document.getElementById("done-empty").style.display = doneCount ? "none" : "";
+    document.getElementById("done-sub").textContent = doneCount + "件";
+
+    document.getElementById("done-count").textContent = doneCount;
+    document.getElementById("total-count").textContent = TASKS[activeOwner].length;
+    var pct = TASKS[activeOwner].length ? Math.round((doneCount / TASKS[activeOwner].length) * 100) : 0;
+    document.getElementById("progress-fill").style.width = pct + "%";
+  }
+
+  render();
+})();
+</script>
